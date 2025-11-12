@@ -1,8 +1,8 @@
-import { QuizQuestion } from './types';
+import { QuizQuestion, Category } from './types';
 
 export const QUIZ_DATA: QuizQuestion[] = [
   {
-    sentence: ["わたし", "なまえは キムです。"],
+    sentence: ["わたし", " なまえは キムです。"],
     options: ["は", "が", "の", "を"],
     answer: "の",
     translation: "제 이름은 김입니다.",
@@ -21,7 +21,8 @@ export const QUIZ_DATA: QuizQuestion[] = [
         { word: "なまえ (名前)", reading: "namae", meaning: "이름" },
         { word: "キム", reading: "kimu", meaning: "김 (고유명사)" },
         { word: "です", reading: "desu", meaning: "~입니다" }
-    ]
+    ],
+    category: Category.Particles
   },
   {
     sentence: ["これ", "ほんです。"],
@@ -42,7 +43,8 @@ export const QUIZ_DATA: QuizQuestion[] = [
         { word: "これ", reading: "kore", meaning: "이것" },
         { word: "ほん (本)", reading: "hon", meaning: "책" },
         { word: "です", reading: "desu", meaning: "~입니다" }
-    ]
+    ],
+    category: Category.Particles
   },
   {
     sentence: ["スーパー", "いきます。"],
@@ -62,7 +64,8 @@ export const QUIZ_DATA: QuizQuestion[] = [
     vocabulary: [
         { word: "スーパー", reading: "sūpā", meaning: "슈퍼마켓" },
         { word: "いきます (行きます)", reading: "ikimasu", meaning: "갑니다" }
-    ]
+    ],
+    category: Category.Particles
   },
   {
     sentence: ["ごはん", "たべます。"],
@@ -82,7 +85,8 @@ export const QUIZ_DATA: QuizQuestion[] = [
     vocabulary: [
         { word: "ごはん (ご飯)", reading: "gohan", meaning: "밥, 식사" },
         { word: "たべます (食べます)", reading: "tabemasu", meaning: "먹습니다" }
-    ]
+    ],
+    category: Category.Particles
   },
   {
     sentence: ["えき", "ともだちにあいます。"],
@@ -103,7 +107,8 @@ export const QUIZ_DATA: QuizQuestion[] = [
         { word: "えき (駅)", reading: "eki", meaning: "역" },
         { word: "ともだち (友達)", reading: "tomodachi", meaning: "친구" },
         { word: "あいます (会います)", reading: "aimasu", meaning: "만납니다" }
-    ]
+    ],
+    category: Category.Particles
   },
   {
     sentence: ["いま なんじ", "か。"],
@@ -125,7 +130,8 @@ export const QUIZ_DATA: QuizQuestion[] = [
         { word: "なんじ (何時)", reading: "nanji", meaning: "몇 시" },
         { word: "か", reading: "ka", meaning: "~까? (의문을 나타냄)" },
         { word: "です", reading: "desu", meaning: "~입니다" }
-    ]
+    ],
+    category: Category.Endings
   },
   {
     sentence: ["わたしも がくせい", "。"],
@@ -147,7 +153,8 @@ export const QUIZ_DATA: QuizQuestion[] = [
         { word: "も", reading: "mo", meaning: "~도" },
         { word: "がくせい (学生)", reading: "gakusei", meaning: "학생" },
         { word: "です", reading: "desu", meaning: "~입니다" }
-    ]
+    ],
+    category: Category.Endings
   },
   {
     sentence: ["きのう えいが", "みました。"],
@@ -168,7 +175,8 @@ export const QUIZ_DATA: QuizQuestion[] = [
         { word: "きのう (昨日)", reading: "kinō", meaning: "어제" },
         { word: "えいが (映画)", reading: "eiga", meaning: "영화" },
         { word: "みました (見ました)", reading: "mimashita", meaning: "봤습니다" }
-    ]
+    ],
+    category: Category.Particles
   },
   {
     sentence: ["つくえの うえ", "ねこが います。"],
@@ -190,7 +198,8 @@ export const QUIZ_DATA: QuizQuestion[] = [
         { word: "うえ (上)", reading: "ue", meaning: "위" },
         { word: "ねこ (猫)", reading: "neko", meaning: "고양이" },
         { word: "います", reading: "imasu", meaning: "있습니다 (사람/동물)" }
-    ]
+    ],
+    category: Category.Particles
   },
   {
     sentence: ["バス", "がっこうに きます。"],
@@ -211,6 +220,7 @@ export const QUIZ_DATA: QuizQuestion[] = [
         { word: "バス", reading: "basu", meaning: "버스" },
         { word: "がっこう (学校)", reading: "gakkō", meaning: "학교" },
         { word: "きます (来ます)", reading: "kimasu", meaning: "옵니다" }
-    ]
+    ],
+    category: Category.Particles
   },
 ];

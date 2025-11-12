@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { QuizQuestion, GameStatus } from './types';
+import React, { useState, useCallback } from 'react';
+import { QuizQuestion, GameStatus, Category } from './types';
 import { QUIZ_DATA } from './constants';
 import QuizCard from './components/QuizCard';
 import ScoreScreen from './components/ScoreScreen';
@@ -14,8 +14,12 @@ const App: React.FC = () => {
   const [score, setScore] = useState(0);
   const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.Start);
 
-  const startGame = useCallback(() => {
-    setQuestions(shuffleArray(QUIZ_DATA));
+  const startGame = useCallback((category: Category | 'all') => {
+    const filteredQuestions = category === 'all'
+      ? QUIZ_DATA
+      : QUIZ_DATA.filter(q => q.category === category);
+    
+    setQuestions(shuffleArray(filteredQuestions));
     setCurrentQuestionIndex(0);
     setScore(0);
     setGameStatus(GameStatus.Playing);
@@ -35,9 +39,19 @@ const App: React.FC = () => {
     }
   }, [currentQuestionIndex, questions.length]);
 
+  const resetGame = useCallback(() => {
+    setGameStatus(GameStatus.Start);
+  }, []);
+
   const renderGameContent = () => {
     switch (gameStatus) {
       case GameStatus.Playing:
+        if (questions.length === 0) {
+            // This can happen if a category has no questions.
+            // Go back to the start screen.
+            setGameStatus(GameStatus.Start);
+            return null;
+        }
         return (
           <QuizCard 
             question={questions[currentQuestionIndex]}
@@ -52,23 +66,48 @@ const App: React.FC = () => {
           <ScoreScreen 
             score={score}
             totalQuestions={questions.length}
-            onRestart={startGame}
+            onRestart={resetGame}
           />
         );
       case GameStatus.Start:
       default:
+        const CategoryButton: React.FC<{
+            onClick: () => void;
+            title: string;
+            description: string;
+        }> = ({ onClick, title, description }) => (
+            <button
+                onClick={onClick}
+                className="w-full text-left p-6 bg-white dark:bg-slate-800 rounded-lg shadow-lg hover:bg-indigo-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800 transition-all transform hover:scale-105"
+            >
+                <h3 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{title}</h3>
+                <p className="mt-2 text-slate-600 dark:text-slate-300">{description}</p>
+            </button>
+        );
+
         return (
-            <div className="w-full max-w-xl text-center p-8 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl">
+            <div className="w-full max-w-2xl text-center p-8">
                 <h1 className="text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">일본어 문장 퀴즈</h1>
-                <p className="text-lg text-slate-600 dark:text-slate-300 mb-8">
-                히라가나와 가타카나 학습을 마친 여러분을 위한 기초 일본어 문장 퀴즈입니다. <br/> 문장의 빈칸에 들어갈 올바른 단어를 선택하여 문법 실력을 향상시켜 보세요!
+                <p className="text-lg text-slate-600 dark:text-slate-300 mb-10">
+                    학습하고 싶은 문법 카테고리를 선택하세요.
                 </p>
-                <button 
-                onClick={startGame}
-                className="w-full py-4 text-xl font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800 transition-transform transform hover:scale-105"
-                >
-                퀴즈 시작하기
-                </button>
+                <div className="space-y-6">
+                    <CategoryButton 
+                        onClick={() => startGame(Category.Particles)}
+                        title="1. 조사 (は, が, を, に, で...)"
+                        description="문장의 뼈대를 이루는 가장 중요한 조사 사용법을 익힙니다."
+                    />
+                    <CategoryButton 
+                        onClick={() => startGame(Category.Endings)}
+                        title="2. 문말 표현 (です, ます...)"
+                        description="정중한 문장을 만드는 기본 동사와 명사 마무리를 배웁니다."
+                    />
+                    <CategoryButton 
+                        onClick={() => startGame('all')}
+                        title="3. 전체 문제"
+                        description="모든 카테고리의 문제를 무작위로 풀어보며 실력을 점검합니다."
+                    />
+                </div>
             </div>
         );
     }

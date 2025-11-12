@@ -4,6 +4,11 @@ export interface Vocabulary {
   meaning: string;
 }
 
+export enum Category {
+  Particles = '조사',
+  Endings = '문말 표현',
+}
+
 export interface QuizQuestion {
   sentence: [string, string];
   options: string[];
@@ -15,6 +20,7 @@ export interface QuizQuestion {
     translation: string;
   };
   vocabulary: Vocabulary[];
+  category: Category;
 }
 
 export enum GameStatus {

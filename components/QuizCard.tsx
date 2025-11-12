@@ -27,6 +27,35 @@ const QuizCard: React.FC<QuizCardProps> = ({ question, onAnswer, onNext, questio
     const correct = option === question.answer;
     setSelectedAnswer(option);
     setIsCorrect(correct);
+    onAnswer(correct);
+
+    const resultHtml = correct
+      ? `<strong>정답입니다!</strong>`
+      : `<strong>아쉽네요. 정답은 '${question.answer}'입니다.</strong>`;
+    
+    const allExplanationsHtml = `
+      <div class='mt-4 pt-3 border-t border-slate-300/50 dark:border-slate-600/50'>
+        <h4 class='font-semibold text-base mb-2'>📝 전체 보기 해설</h4>
+        <ul class='space-y-2'>
+          ${question.options.map(opt => {
+            let indicator = '';
+            if (opt === question.answer) {
+                indicator = ' <span class="text-green-600 dark:text-green-400 font-bold">(정답)</span>';
+            } else if (opt === option && !correct) {
+                indicator = ' <span class="text-red-600 dark:text-red-400 font-bold">(선택한 답)</span>';
+            }
+            return `<li><strong class='font-bold text-lg'>${opt}</strong>${indicator}: ${question.explanations[opt]}</li>`;
+          }).join('')}
+        </ul>
+      </div>
+    `;
+
+    const exampleHtml = `
+      <div class='mt-4 pt-3 border-t border-slate-300/50 dark:border-slate-600/50'>
+         <h4 class='font-semibold text-base mb-2'>✨ 다른 예시</h4>
+         <p>${question.example.sentence} (${question.example.translation})</p>
+      </div>
+    `;
 
     const vocabListHtml = `
       <div class='mt-4 pt-3 border-t border-slate-300/50 dark:border-slate-600/50'>
@@ -39,17 +68,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ question, onAnswer, onNext, questio
       </div>
     `;
 
-    if (correct) {
-        setFeedback(
-          `<strong>정답입니다!</strong><br><br><strong>'${question.answer}' 설명:</strong> ${question.explanations[question.answer]}<br><br><strong>다른 예시:</strong> ${question.example.sentence} (${question.example.translation})` + vocabListHtml
-        );
-    } else {
-        setFeedback(
-            `<strong>아쉽네요.</strong> 선택하신 '<strong>${option}</strong>'의 설명은 다음과 같아요.<br><br><strong>'${option}' 설명:</strong> ${question.explanations[option]}<br><br>이 문장에서는 '<strong>${question.answer}</strong>'를 사용해야 합니다. (${question.explanations[question.answer]})` + vocabListHtml
-        );
-    }
-
-    onAnswer(correct);
+    setFeedback(resultHtml + allExplanationsHtml + exampleHtml + vocabListHtml);
   };
 
   const getButtonClass = (option: string) => {
@@ -109,7 +128,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ question, onAnswer, onNext, questio
                 : 'bg-red-100 dark:bg-red-900/50 border border-red-200 dark:border-red-700 text-red-800 dark:text-red-200'
             }`}
         >
-            <p dangerouslySetInnerHTML={{ __html: feedback }} />
+            <div dangerouslySetInnerHTML={{ __html: feedback }} />
         </div>
       )}
 
